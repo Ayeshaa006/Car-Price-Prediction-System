@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Price Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <nav>
+        <div class="logo">Car<span>.</span>Predict</div>
+        <div class="tag">ML PROJECT</div>
+    </nav>
+
+    <div class="hero">
+        <h1>Car Price <em>Predictor</em></h1>
+        <p>Enter car details to predict the price category</p>
+    </div>
+
+    <div class="card">
+        <form action="/predict" method="POST">
+
+            <div class="row">
+                <div class="form-group">
+                    <label>Year</label>
+                    <input type="number" name="year" placeholder="e.g. 2015" min="2000" max="2024" required>
+                </div>
+                <div class="form-group">
+                    <label>Present Price (Lakhs)</label>
+                    <input type="number" name="present_price" step="0.1" placeholder="e.g. 6.5" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Kilometers Driven</label>
+                <input type="number" name="kms_driven" placeholder="e.g. 35000" required>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label>Fuel Type</label>
+                    <select name="fuel_type">
+                        <option>Petrol</option>
+                        <option>Diesel</option>
+                        <option>CNG</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Seller Type</label>
+                    <select name="seller_type">
+                        <option>Dealer</option>
+                        <option>Individual</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label>Transmission</label>
+                    <select name="transmission">
+                        <option>Manual</option>
+                        <option>Automatic</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Previous Owners</label>
+                    <input type="number" name="owner" placeholder="0, 1, 2..." min="0" max="3" required>
+                </div>
+            </div>
+
+            <button type="submit">Predict Price Category</button>
+
+        </form>
+    </div>
+
+    {% if prediction is not none %}
+        {% if prediction == 'Low' %}
+            <div class="result low">
+                <div class="label">Predicted Price Category</div>
+                <div class="value">Low &nbsp;— Under 3 Lakhs</div>
+            </div>
+        {% elif prediction == 'Medium' %}
+            <div class="result medium">
+                <div class="label">Predicted Price Category</div>
+                <div class="value">Medium &nbsp;— 3 to 8 Lakhs</div>
+            </div>
+        {% elif prediction == 'High' %}
+            <div class="result high">
+                <div class="label">Predicted Price Category</div>
+                <div class="value">High &nbsp;— Above 8 Lakhs</div>
+            </div>
+        {% else %}
+            <div class="result error">
+                <div class="label">Error</div>
+                <div class="value">{{ prediction }}</div>
+            </div>
+        {% endif %}
+    {% endif %}
+
+</body>
+</html>
